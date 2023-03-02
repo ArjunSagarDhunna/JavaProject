@@ -105,14 +105,22 @@ app.get("/posts", (req, res)=>
     
     upload(req).then((uploaded)=>{
         req.body.featureImage = uploaded.url;
-        let addBlog = {
-            body: req.body.body,
-            title: req.body.title,
-            postDate: Date.now(),
-            category: req.body.category,
-            featureImage: req.body.featureImage,
-            published: req.body.published
-        };
+        let addBlog = {};
+
+            addBlog.body = req.body.body;
+            addBlog.title = req.body.title;
+            addBlog.postDate = Date.now();
+            addBlog.category = req.body.category;
+            addBlog.featureImage = req.body.featureImage;
+            addBlog.published = req.body.published;
+        //let addBlog = {
+        //    body: req.body.body,
+        //    title: req.body.title,
+        //    postDate: Date.now(),
+        //    category: req.body.category,
+        //    featureImage: req.body.featureImage,
+        //    published: req.body.published
+        //};
 
             blog.addPost(addBlog);
             res.redirect('/posts'); 
