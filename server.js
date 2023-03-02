@@ -105,9 +105,17 @@ app.get("/posts", (req, res)=>
     
     upload(req).then((uploaded)=>{
         req.body.featureImage = uploaded.url;
-    
-        // TODO: Process the req.body and add it as a new Blog Post before redirecting to /posts
-    
+        let addBlog = {
+            body: req.body.body,
+            title: req.body.title,
+            postDate: Date.now(),
+            category: req.body.category,
+            featureImage: req.body.featureImage,
+            published: req.body.published
+        };
+
+            blog.addPost(addBlog);
+            res.redirect('/posts'); 
     });
     
   });
