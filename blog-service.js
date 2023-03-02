@@ -37,6 +37,21 @@ exports.getAllPosts= function() {
     })
 };
 
+exports.addPost= function(postData) {
+    return new Promise((resolve, reject) => {
+        postData.published == undefined ? postData.published = false : postData.published = true;
+        postData.id = posts.lenght + 1;
+        if (posts.length != 0) 
+        {
+            posts.push(postData);
+            resolve(postData);
+        } else 
+        {
+            reject("No results returned");
+        }
+    })
+};
+
 exports.getCategories = function() {
     return new Promise ((resolve,reject) => {
         if (categories.length != 0) 
