@@ -46,14 +46,49 @@ app.get("/blog", (req, res)=>
 
 app.get("/posts", (req, res)=>
   {
-    
-        blog.getAllPosts().then((data) =>
-      {
-          res.json({data});
-      }).catch((err) => 
-      {
-          res.json({message: err});
-      })
+    if(req.query.minDate) {
+        blog.getPostsByMinDate(req.query.minDate).then((data) => 
+        {
+            res.json({data});
+        })
+        .catch((err) => 
+        {
+            res.json({message: err});
+        })
+    }
+
+    else if(req.query.category) {
+        blog.getPostsByCategory(req.query.category).then((data) => 
+        {
+            res.json({data});
+        })
+        .catch((err) => 
+        {   
+            res.json({message: err});
+        })
+    }
+
+else {
+    blog.getAllPosts().then((data) =>
+  {
+      res.json({data});
+  }).catch((err) => 
+  {
+      res.json({message: err});
+  })
+}
+  });
+
+  app.get("/post/:value", (req, res) => 
+  {
+    blog.getPostById(req.params.value).then((data) => 
+    {
+        res.json({data});
+    })
+    .catch((err) => 
+    {
+        res.json({message: err});
+    })
   });
 
   cloudinary.config({
@@ -113,14 +148,6 @@ app.get("/posts", (req, res)=>
             addBlog.category = req.body.category;
             addBlog.featureImage = req.body.featureImage;
             addBlog.published = req.body.published;
-        //let addBlog = {
-        //    body: req.body.body,
-        //    title: req.body.title,
-        //    postDate: Date.now(),
-        //    category: req.body.category,
-        //    featureImage: req.body.featureImage,
-        //    published: req.body.published
-        //};
 
             blog.addPost(addBlog);
             res.redirect('/posts'); 

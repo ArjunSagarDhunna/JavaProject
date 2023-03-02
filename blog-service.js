@@ -24,6 +24,42 @@ exports.initialize = () =>{
     })
 };
 
+exports.getPostsByCategory = function(category){
+    return new Promise((resolve, reject) => {
+        var Category_post = posts.filter(post => post.category == category);
+        if(Category_post.lenght != 0) {
+            resolve(Category_post);
+        }
+        else{
+            reject("no result returned");
+        }
+    })
+};
+
+exports.getPostsByMinDate = function(minDateStr){
+    return new Promise((resolve, reject) => {
+        var MINdate = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
+        if(MINdate.lenght != 0) {
+            resolve(MINdate);
+        }
+        else {
+            reject("no result returned");
+        }
+    })
+};
+
+exports.getPostById = function(id) {
+    return new Promise((resolve, reject) => {
+        var Post_id = posts.filter(post => post.id == id);
+        if(Post_id.lenght != 0) {
+            resolve(Post_id);
+        }
+        else {
+            reject("no result returned");
+        }
+    })
+};
+
 exports.getAllPosts= function() {
     return new Promise((resolve, reject) => {
         if (posts.length != 0) 
