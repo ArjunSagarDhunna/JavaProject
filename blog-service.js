@@ -5,18 +5,22 @@ var categories = [];
 exports.initialize = () =>{
     return new Promise ((resolve, reject) =>{
         fs.readFile('./data/posts.json', (err,data)=> {
-            if (err) {
+            if (err) 
+            {
                 reject ('unable to read file');
             }
-            else {
+            else 
+            {
                 posts = JSON.parse(data);
             }
         });
         fs.readFile('./data/categories.json', (err,data) =>{
-            if (err) {
+            if (err) 
+            {
                 reject ('unable to read file');
             }
-            else {
+            else 
+            {
                 categories = JSON.parse(data);
             }
         })       
@@ -27,10 +31,12 @@ exports.initialize = () =>{
 exports.getPostsByCategory = function(category){
     return new Promise((resolve, reject) => {
         var Category_post = posts.filter(post => post.category == category);
-        if(Category_post.lenght != 0) {
+        if(Category_post.lenght != 0) 
+        {
             resolve(Category_post);
         }
-        else{
+        else
+        {
             reject("no result returned");
         }
     })
@@ -39,10 +45,12 @@ exports.getPostsByCategory = function(category){
 exports.getPostsByMinDate = function(minDateStr){
     return new Promise((resolve, reject) => {
         var MINdate = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
-        if(MINdate.lenght != 0) {
+        if(MINdate.lenght != 0) 
+        {
             resolve(MINdate);
         }
-        else {
+        else 
+        {
             reject("no result returned");
         }
     })
@@ -51,10 +59,12 @@ exports.getPostsByMinDate = function(minDateStr){
 exports.getPostById = function(id) {
     return new Promise((resolve, reject) => {
         var Post_id = posts.filter(post => post.id == id);
-        if(Post_id.lenght != 0) {
+        if(Post_id.lenght != 0) 
+        {
             resolve(Post_id);
         }
-        else {
+        else 
+        {
             reject("no result returned");
         }
     })
@@ -65,8 +75,8 @@ exports.getAllPosts= function() {
         if (posts.length != 0) 
         {
             resolve(posts);
-            
-        } else 
+        } 
+        else 
         {
             reject("No results returned");
         }
@@ -81,7 +91,8 @@ exports.addPost= function(postData) {
         {
             posts.push(postData);
             resolve(postData);
-        } else 
+        } 
+        else 
         {
             reject("No results returned");
         }
@@ -97,7 +108,6 @@ exports.getCategories = function() {
         else 
         {
             reject('no result found');
-            
         }
     })
 };
@@ -108,7 +118,6 @@ exports.getPublishedPosts = function() {
         if (publish.length != 0) 
         {
             resolve(publish);
-            
         }
         else
         {
