@@ -80,7 +80,7 @@ app.get("/posts", (req, res)=>
     if(req.query.minDate) {
         blog.getPostsByMinDate(req.query.minDate).then((data) => 
         {
-            res.render("posts,{posts: data}");
+            res.render("posts",{posts: data});
         })
         .catch((err) => 
         {
@@ -91,7 +91,7 @@ app.get("/posts", (req, res)=>
     else if(req.query.category) {
         blog.getPostsByCategory(req.query.category).then((data) => 
         {
-            res.render("posts,{posts: data}");
+            res.render("posts",{posts: data});
         })
         .catch((err) => 
         {   
@@ -102,7 +102,7 @@ app.get("/posts", (req, res)=>
 else {
     blog.getAllPosts().then((data) =>
   {
-    res.render("posts,{posts: data}");
+    res.render("posts",{posts: data});
   }).catch((err) => 
   {
     res.render({message: "no result"});
