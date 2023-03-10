@@ -1,4 +1,9 @@
-<div class="row">
+{{#unless posts}}
+<div class="col-md-12 text-center">
+    <strong>{{message}}</strong>
+</div>
+{{/unless}}
+
     <div class="col-md-12">
           <h2>Posts</h2>
           <hr />
@@ -230,4 +235,3 @@
         </div>
 
     </div>
-</div>
