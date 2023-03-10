@@ -80,32 +80,32 @@ app.get("/posts", (req, res)=>
     if(req.query.minDate) {
         blog.getPostsByMinDate(req.query.minDate).then((data) => 
         {
-            res.json({data});
+            res.render("posts,{posts: data}");
         })
         .catch((err) => 
         {
-            res.json({message: err});
+            res.render({message: "no result"});
         })
     }
 
     else if(req.query.category) {
         blog.getPostsByCategory(req.query.category).then((data) => 
         {
-            res.json({data});
+            res.render("posts,{posts: data}");
         })
         .catch((err) => 
         {   
-            res.json({message: err});
+            res.render({message: "no result"});
         })
     }
 
 else {
     blog.getAllPosts().then((data) =>
   {
-      res.json({data});
+    res.render("posts,{posts: data}");
   }).catch((err) => 
   {
-      res.json({message: err});
+    res.render({message: "no result"});
   })
 }
   });
