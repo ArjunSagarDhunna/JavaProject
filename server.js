@@ -32,8 +32,12 @@ app.get("/", function(req,res){
     res.sendFile(path.join(__dirname,"/views/about.html"));
   });
 
-app.get("/about", function(req,res){
-    res.sendFile(path.join(__dirname +"/views/about.html"));
+//app.get("/about", function(req,res){
+//    res.sendFile(path.join(__dirname +"/views/about.html"));
+//  });
+
+app.get('/about', function(req, res) {
+    res.render('about'); // Render the "about" view using EJS
   });
 
 app.get("/blog", (req, res)=>
