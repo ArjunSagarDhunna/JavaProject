@@ -103,7 +103,7 @@ else {
 
 
   app.get("/posts/add", function(req,res){
-    res.sendFile(path.join(__dirname +"/views/addPost.html"));
+    res.render('addPost');
   });
 
   app.get("/categories", (req, res)=>
