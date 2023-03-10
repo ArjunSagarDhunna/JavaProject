@@ -29,15 +29,11 @@ app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 
 app.get("/", function(req,res){
-    res.sendFile(path.join(__dirname,"/views/about.html"));
+    res.redirect('/about');
   });
 
-//app.get("/about", function(req,res){
-//    res.sendFile(path.join(__dirname +"/views/about.html"));
-//  });
-
-app.get('/about', function(req, res) {
-    res.render('about'); // Render the "about" view using EJS
+app.get("/about", function(req,res){
+    res.render('about');
   });
 
 app.get("/blog", (req, res)=>
