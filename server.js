@@ -1,9 +1,9 @@
 /*********************************************************************************
-*  WEB322 – Assignment 03
+*  WEB322 – Assignment 04
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: Arjun Sagar Dhunna Student ID: 157099219 Date: 2023-03-01
+*  Name: Arjun Sagar Dhunna Student ID: 157099219 Date: 2023-03-10
 *
 *  Online (Cyclic) Link: https://dull-plum-xerus-toga.cyclic.app
 *
@@ -16,7 +16,7 @@ const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const upload = multer();// no { storage: storage } since we are not using disk storage
-
+const exphbs = require('express-handlebars');
 var HTTP_PORT = process.env.PORT || 8080;
 
 function onHttpStart() 
@@ -24,6 +24,9 @@ function onHttpStart()
     console.log("Express http server listening on: " + HTTP_PORT);
 }
 app.use(express.static('public'));
+
+app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
 
 app.get("/", function(req,res){
     res.sendFile(path.join(__dirname,"/views/about.html"));
