@@ -84,7 +84,7 @@ app.get("/posts", (req, res)=>
         })
         .catch((err) => 
         {
-            res.render({message: "no result"});
+            res.render("posts",{message: "no result"});
         })
     }
 
@@ -95,7 +95,7 @@ app.get("/posts", (req, res)=>
         })
         .catch((err) => 
         {   
-            res.render({message: "no result"});
+            res.render("posts",{message: "no result"});
         })
     }
 
@@ -105,7 +105,7 @@ else {
     res.render("posts",{posts: data});
   }).catch((err) => 
   {
-    res.render({message: "no result"});
+    res.render("posts",{message: "no result"});
   })
 }
   });
@@ -138,10 +138,10 @@ else {
   {
       blog.getCategories().then((data)=>
       {
-          res.json({data});
+          res.render("categories",{categories: data});
       }).catch((err) => 
       {
-          res.json({message: err});
+          res.render("categories",{message: "no result"});
       })
   });
 
