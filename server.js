@@ -61,7 +61,7 @@ app.use(function(req,res,next){
 
 
 app.get("/", function(req,res){
-    res.redirect('/blog');
+    res.redirect('/about');
   });
 
 app.get("/about", function(req,res){
@@ -112,7 +112,7 @@ app.get("/about", function(req,res){
     }
 
     // render the "blog" view with all of the data (viewData)
-    res.render("blog", {data: viewData})
+    res.render('blog', {data: viewData})
 
 });
 

@@ -127,7 +127,7 @@ exports.getPublishedPosts = function() {
     })
 };
 
-exports.getPublishedPostByCategory = function(category) {
+exports.getPublishedPostsByCategory = function(category) {
     return new Promise ((resolve, reject) => {
         var publish = posts.filter(post => post.published == true && post.category == category);
         if (publish.length != 0) 
