@@ -12,6 +12,7 @@ var express = require("express");
 var path = require("path");
 var app = express();
 var blog = require(__dirname + "/blog-service.js");
+const stripJs = require('strip-js');
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
@@ -41,8 +42,10 @@ app.engine('.hbs', exphbs.engine({
             } else {
                 return options.fn(this);
             }
-        }
-        
+        },
+        safeHTML: function(context){
+            return stripJs(context);
+        }        
     }
 }));
 
