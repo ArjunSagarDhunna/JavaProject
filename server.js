@@ -112,7 +112,7 @@ app.get("/about", function(req,res){
     }
 
     // render the "blog" view with all of the data (viewData)
-    res.render('blog', {data: viewData})
+    res.render("blog", {data: viewData})
 
 });
 
