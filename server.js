@@ -13,6 +13,7 @@ var path = require("path");
 var app = express();
 var blog = require(__dirname + "/blog-service.js");
 const stripJs = require('strip-js');
+const blogData = require("./blog-service");
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
