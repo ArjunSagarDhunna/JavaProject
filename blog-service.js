@@ -126,3 +126,18 @@ exports.getPublishedPosts = function() {
         
     })
 };
+
+exports.getPublishedPostByCategory = function(category) {
+    return new Promise ((resolve, reject) => {
+        var publish = posts.filter(post => post.published == true && post.category == category);
+        if (publish.length != 0) 
+        {
+            resolve(publish);
+        }
+        else
+        {
+            reject('no result found');
+        }
+        
+    })
+}
