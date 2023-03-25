@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-          <h2>Categories</h2>
+          <h2>Categories <a href="/categories/add" class="btn btn-success pull-right">Add Category</a></h2>
           <hr />
 
            <div class="table-responsive">
@@ -11,30 +11,17 @@
                 <th>Category Name</th>
             </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td><a href="/posts?category=1">1</a></td>
-                    <td><a href="/posts?category=1">Technology</a></td>
-                </tr>
-                <tr>
-                    <td><a href="/posts?category=2">2</a></td>
-                    <td><a href="/posts?category=2">Gaming</a></td>
-                </tr>
-                <tr>
-                    <td><a href="/posts?category=3">3</a></td>
-                    <td><a href="/posts?category=3">Fashion</a></td>
-                </tr>
-                <tr>
-                    <td><a href="/posts?category=4">4</a></td>
-                    <td><a href="/posts?category=4">Education</a></td>
-                </tr>
-                <tr>
-                    <td><a href="/posts?category=5">5</a></td>
-                    <td><a href="/posts?category=5">Wellness</a></td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-
-    </div>
+<tbody>
+<tr>
+<td><a href="/posts?category={{id}}">{{id}}</a></td>
+<td><a href="/posts?category={{id}}">{{category}}</a></td>
+<td><a href="categories/delete/{{id}}" class="btn btn-danger">Remove</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td colspan="2" class="text-center">{{message}}</td>
+</tr>
+</tbody>
+</table>
 </div>
