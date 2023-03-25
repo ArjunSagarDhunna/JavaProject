@@ -1,5 +1,5 @@
 /*********************************************************************************
-*  WEB322 – Assignment 04
+*  WEB322 – Assignment 05
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
@@ -166,6 +166,16 @@ app.get('/blog/:id', async (req, res) => {
     res.render("blog", {data: viewData})
 });
 
+app.get("/categories/delete/:id", (req, res) => {
+    deleteCategoryById(req.params.id)
+      .then(() => {
+        res.redirect("/categories");
+      })
+      .catch(() => {
+        console.log("Unable to remove category / Category not found");
+      });
+  });
+
 app.get("/posts", (req, res)=>
   {
     if(req.query.minDate) {
@@ -234,6 +244,31 @@ else {
       {
           res.render("categories",{message: "no result"});
       })
+  });
+
+  app.post("/categories/add", (req, res) => {
+    let Object = {};
+    Object.category = req.body.category;
+    console.log(req.body.category);
+    if (req.body.category != "") {
+      addCategory(Object)
+        .then(() => {
+          res.redirect("/categories");
+        })
+        .catch(() => {
+          console.log("Some error occured");
+        });
+    }
+  });
+
+  app.get("/posts/delete/:id", (req, res) => {
+    deletePostById(req.params.id)
+      .then(() => {
+        res.redirect("/posts");
+      })
+      .catch(() => {
+        console.log("Unable to remove category / Category not found");
+      });
   });
 
   app.post("/posts/add", upload.single("featureImage"), (req, res) => 
