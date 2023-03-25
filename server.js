@@ -50,6 +50,7 @@ app.engine('.hbs', exphbs.engine({
     }
 }));
 
+app.use(express.urlencoded({extended: true}));
 app.set('view engine', '.hbs');
 
 app.use(function(req,res,next){
