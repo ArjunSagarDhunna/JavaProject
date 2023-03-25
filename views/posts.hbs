@@ -20,8 +20,9 @@
                     </tr>
                 </thead>
 
+{{#if posts}}
 <tbody>
-{{#each posts}}
+
 <tr>
 <td>{{id}}</td>
 <td>{{title}}</td>
@@ -32,12 +33,12 @@
 </tr>
 
 </tbody>
-
+{{else}}
 <tbody>
 <tr>
 <td colspan="5" class="text-center">{{message}}</td>
 </tr>
 </tbody>
-
+{{/if}}
 </table>
 </div>
