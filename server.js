@@ -11,14 +11,18 @@
 var express = require("express");
 var path = require("path");
 var app = express();
-var blog = require(__dirname + "/blog-service.js");
+//var blog = require(__dirname + "/blog-service.js");
 const stripJs = require('strip-js');
-const blogData = require("./blog-service");
+const blog = require("./blog-service");
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const upload = multer();// no { storage: storage } since we are not using disk storage
 const exphbs = require('express-handlebars');
+
+const authData = require('./auth-service');
+const clientSessions = require('client-sessions')
+
 var HTTP_PORT = process.env.PORT || 8080;
 
 function onHttpStart() 
@@ -26,6 +30,8 @@ function onHttpStart()
     console.log("Express http server listening on: " + HTTP_PORT);
 }
 app.use(express.static('public'));
+
+
 
 app.engine('.hbs', exphbs.engine({ 
     extname: '.hbs',
@@ -49,6 +55,24 @@ app.engine('.hbs', exphbs.engine({
         }        
     }
 }));
+
+
+app.use(clientSessions({
+    cookieName: "session",
+    secret: "secret",
+    duration: 2 * 60 * 1000,
+    activeDuration: 1000 * 60
+}));
+
+
+function ensureLogin(req, res, next) {
+    if (!req.session.user) {
+        res.redirect("/login");
+    }
+    else {
+        next();
+    }
+}
 
 app.use(express.urlencoded({extended: true}));
 app.set('view engine', '.hbs');
@@ -167,17 +191,16 @@ app.get('/blog/:id', async (req, res) => {
     res.render("blog", {data: viewData})
 });
 
-app.get("/categories/delete/:id", (req, res) => {
-    deleteCategoryById(req.params.id)
-      .then(() => {
-        res.redirect("/categories");
+app.get('/categories/delete/:id', ensureLogin, (req, res) => {
+    blog.deleteCategoryById(req.params.id).then(() => {
+        res.redirect('/categories');
       })
       .catch(() => {
         console.log("Unable to remove category / Category not found");
       });
   });
 
-app.get("/posts", (req, res)=>
+app.get("/posts", ensureLogin, (req, res)=>
   {
     if(req.query.minDate) {
         blog.getPostsByMinDate(req.query.minDate).then((data) => 
@@ -212,7 +235,7 @@ else {
 }
   });
 
-  app.get("/post/:value", (req, res) => 
+  app.get("/post/:value", ensureLogin, (req, res) => 
   {
     blog.getPostById(req.params.value).then((data) => 
     {
@@ -232,11 +255,11 @@ else {
 });
 
 
-  app.get("/posts/add", function(req,res){
+  app.get("/posts/add", ensureLogin, function(req,res){
     res.render('addPost');
   });
 
-  app.get("/categories", (req, res)=>
+  app.get("/categories", ensureLogin, (req, res)=>
   {
       blog.getCategories().then((data)=>
       {
@@ -247,7 +270,11 @@ else {
       })
   });
 
-  app.post("/categories/add", (req, res) => {
+  app.get('/categories/add', ensureLogin, (req, res) => {
+    res.render('addCategory');
+});
+
+  app.post("/categories/add", ensureLogin, (req, res) => {
     let Object = {};
     Object.category = req.body.category;
     console.log(req.body.category);
@@ -262,7 +289,7 @@ else {
     }
   });
 
-  app.get("/posts/delete/:id", (req, res) => {
+  app.get("/posts/delete/:id", ensureLogin, (req, res) => {
     deletePostById(req.params.id)
       .then(() => {
         res.redirect("/posts");
@@ -272,7 +299,7 @@ else {
       });
   });
 
-  app.post("/posts/add", upload.single("featureImage"), (req, res) => 
+  app.post("/posts/add", ensureLogin, upload.single("featureImage"), (req, res) => 
   {
     let streamUpload = (req) => {
         return new Promise((resolve, reject) => {
@@ -313,10 +340,7 @@ else {
     
   });
   
-  app.use((req, res)=>
-{
-    res.status(404).end('404 Page Not Found');
-});
+
 
 //app.listen(HTTP_PORT, onHttpStart());
 
@@ -326,4 +350,65 @@ blog.initialize().then(() =>
 }).catch (() => 
 {
     console.log('Promise is not Resolved');
+});
+
+
+
+
+app.get("/login", (req, res) => {
+    res.render('login');
+});
+
+app.get("/register", (req, res) => {
+    res.render('register');
+});
+
+app.post("/register", (req, res) => {
+    authData.registerUser(req.body)
+        .then(() => {
+            res.render('register', { successMessage: "User Created" });
+        })
+        .catch((err) => {
+            res.render('register', {
+                errorMessage: err,
+                userName: req.body.userName
+            });
+        })
+});
+
+app.post("/login", (req, res) => {
+    req.body.userAgent = req.get('User-Agent');
+
+    authData.checkUser(req.body).then((user) => {
+        req.session.user = {
+            "userName": user.userName,
+            "email": user.email,
+            "loginHistory": user.loginHistory
+        }
+        res.redirect('/posts');
+    })
+        .catch((err) => {
+            res.render('login', {
+                errorMessage: err,
+                userName: req.body.userName
+            });
+        })
+});
+
+app.get('/logout', (req, res) => {
+    req.session.reset();
+    res.redirect('/login');
+});
+
+app.get('/userHistory', (req, res) => {
+    res.render('userHistory');
+})
+// 404 page
+app.use((req, res) => {
+    res.status(404).render('404')
+});
+
+app.use((req, res)=>
+{
+    res.status(404).end('404 Page Not Found');
 });
